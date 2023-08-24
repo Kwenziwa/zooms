@@ -47,11 +47,11 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            my_list = line.split(" ")
+            v_mylist = line.split(" ")
 
             kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
+            for i in range(1, len(v_mylist)):
+                key, value = tuple(v_mylist[i].split("="))
                 if value[0] == '"':
                     value = value.strip('"').replace("_", " ")
                 else:
@@ -62,9 +62,9 @@ class HBNBCommand(cmd.Cmd):
                 kwargs[key] = value
 
             if kwargs == {}:
-                obj = eval(my_list[0])()
+                obj = eval(v_mylist[0])()
             else:
-                obj = eval(my_list[0])(**kwargs)
+                obj = eval(v_mylist[0])(**kwargs)
                 storage.new(obj)
             print(obj.id)
             obj.save()
@@ -85,13 +85,13 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            my_list = line.split(" ")
-            if my_list[0] not in self.__classes:
+            v_mylist = line.split(" ")
+            if v_mylist[0] not in self.__classes:
                 raise NameError()
-            if len(my_list) < 2:
+            if len(v_mylist) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
+            key = v_mylist[0] + '.' + v_mylist[1]
             if key in objects:
                 print(objects[key])
             else:
@@ -116,13 +116,13 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            my_list = line.split(" ")
-            if my_list[0] not in self.__classes:
+            v_mylist = line.split(" ")
+            if v_mylist[0] not in self.__classes:
                 raise NameError()
-            if len(my_list) < 2:
+            if len(v_mylist) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
+            key = v_mylist[0] + '.' + v_mylist[1]
             if key in objects:
                 del objects[key]
                 storage.save()
@@ -169,24 +169,24 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            my_list = split(line, " ")
-            if my_list[0] not in self.__classes:
+            v_mylist = split(line, " ")
+            if v_mylist[0] not in self.__classes:
                 raise NameError()
-            if len(my_list) < 2:
+            if len(v_mylist) < 2:
                 raise IndexError()
             objects = storage.all()
-            key = my_list[0] + '.' + my_list[1]
+            key = v_mylist[0] + '.' + v_mylist[1]
             if key not in objects:
                 raise KeyError()
-            if len(my_list) < 3:
+            if len(v_mylist) < 3:
                 raise AttributeError()
-            if len(my_list) < 4:
+            if len(v_mylist) < 4:
                 raise ValueError()
             v = objects[key]
             try:
-                v.__dict__[my_list[2]] = eval(my_list[3])
+                v.__dict__[v_mylist[2]] = eval(v_mylist[3])
             except Exception:
-                v.__dict__[my_list[2]] = my_list[3]
+                v.__dict__[v_mylist[2]] = v_mylist[3]
                 v.save()
         except SyntaxError:
             print("** class name missing **")
@@ -204,17 +204,17 @@ class HBNBCommand(cmd.Cmd):
     def count(self, line):
         """count the number of instances of a class
         """
-        counter = 0
+        v_counter = 0
         try:
-            my_list = split(line, " ")
-            if my_list[0] not in self.__classes:
+            v_mylist = split(line, " ")
+            if v_mylist[0] not in self.__classes:
                 raise NameError()
             objects = storage.all()
             for key in objects:
                 name = key.split('.')
-                if name[0] == my_list[0]:
-                    counter += 1
-            print(counter)
+                if name[0] == v_mylist[0]:
+                    v_counter += 1
+            print(v_counter)
         except NameError:
             print("** class doesn't exist **")
 
@@ -225,8 +225,8 @@ class HBNBCommand(cmd.Cmd):
         Return:
             returns string of argumetns
         """
-        new_list = []
-        new_list.append(args[0])
+        sim_list = []
+        sim_list.append(args[0])
         try:
             my_dict = eval(
                 args[1][args[1].find('{'):args[1].find('}')+1])
@@ -234,29 +234,29 @@ class HBNBCommand(cmd.Cmd):
             my_dict = None
         if isinstance(my_dict, dict):
             new_str = args[1][args[1].find('(')+1:args[1].find(')')]
-            new_list.append(((new_str.split(", "))[0]).strip('"'))
-            new_list.append(my_dict)
-            return new_list
+            sim_list.append(((new_str.split(", "))[0]).strip('"'))
+            sim_list.append(my_dict)
+            return sim_list
         new_str = args[1][args[1].find('(')+1:args[1].find(')')]
-        new_list.append(" ".join(new_str.split(", ")))
-        return " ".join(i for i in new_list)
+        sim_list.append(" ".join(new_str.split(", ")))
+        return " ".join(i for i in sim_list)
 
     def default(self, line):
         """retrieve all instances of a class and
         retrieve the number of instances
         """
-        my_list = line.split('.')
-        if len(my_list) >= 2:
-            if my_list[1] == "all()":
-                self.do_all(my_list[0])
-            elif my_list[1] == "count()":
-                self.count(my_list[0])
-            elif my_list[1][:4] == "show":
-                self.do_show(self.strip_clean(my_list))
-            elif my_list[1][:7] == "destroy":
-                self.do_destroy(self.strip_clean(my_list))
-            elif my_list[1][:6] == "update":
-                args = self.strip_clean(my_list)
+        v_mylist = line.split('.')
+        if len(v_mylist) >= 2:
+            if v_mylist[1] == "all()":
+                self.do_all(v_mylist[0])
+            elif v_mylist[1] == "count()":
+                self.count(v_mylist[0])
+            elif v_mylist[1][:4] == "show":
+                self.do_show(self.strip_clean(v_mylist))
+            elif v_mylist[1][:7] == "destroy":
+                self.do_destroy(self.strip_clean(v_mylist))
+            elif v_mylist[1][:6] == "update":
+                args = self.strip_clean(v_mylist)
                 if isinstance(args, list):
                     obj = storage.all()
                     key = args[0] + ' ' + args[1]

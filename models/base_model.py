@@ -16,8 +16,8 @@ class BaseModel:
 
     Attributes:
         id (sqlalchemy String): The BaseModel id.
-        created_at (sqlalchemy DateTime): The datetime at creation.
-        updated_at (sqlalchemy DateTime): The datetime of last update.
+        created_at : The datetime at creation.
+        updated_at : The datetime of last update.
     """
 
     id = Column(String(60), primary_key=True, nullable=False)
@@ -25,11 +25,11 @@ class BaseModel:
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Initialize a new BaseModel.
+        """Init a new BaseModel.
 
         Args:
             *args (any): Unused.
-            **kwargs (dict): Key/value pairs of attributes.
+            **kwargs (dict): Key/value pairs of a attribute.
         """
         self.id = str(uuid4())
         self.created_at = self.updated_at = datetime.utcnow()
@@ -47,24 +47,20 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """Return a dictionary representation of the BaseModel instance.
-
-        Includes the key/value pair __class__ representing
-        the class name of the object.
-        """
-        my_dict = self.__dict__.copy()
-        my_dict["__class__"] = str(type(self).__name__)
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
-        my_dict.pop("_sa_instance_state", None)
-        return my_dict
+        """Return a dict repre of the BaseModel instance."""
+        the_dict = self.__dict__.copy()
+        the_dict["__class__"] = str(type(self).__name__)
+        the_dict["created_at"] = self.created_at.isoformat()
+        the_dict["updated_at"] = self.updated_at.isoformat()
+        the_dict.pop("_sa_instance_state", None)
+        return the_dict
 
     def delete(self):
-        """Delete the current instance from storage."""
+        """Delete the selected instance from storage."""
         models.storage.delete(self)
 
     def __str__(self):
-        """Return the print/str representation of the BaseModel instance."""
-        d = self.__dict__.copy()
-        d.pop("_sa_instance_state", None)
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, d)
+        """Return the print/str rep of the BaseModel instance."""
+        xy = self.__dict__.copy()
+        xy.pop("_sa_instance_state", None)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, xy)

@@ -19,7 +19,7 @@ class Place(BaseModel, Base):
     
     __tablename__ = 'places'
 
-    """ A place to stay """
+    """ A place to stay attri """
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -41,27 +41,27 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """ getter returns list of reviews """
-            list_of_reviews = []
-            all_reviews = models.storage.all(Review)
-            for review in all_reviews.values():
+            """ teh getter returns list of reviews """
+            reviews_list = []
+            all_revw = models.storage.all(Review)
+            for review in all_revw.values():
                 if review.place_id == self.id:
-                    list_of_reviews.append(review)
-            return list_of_reviews
+                    reviews_list.append(review)
+            return reviews_list
 
         @property
         def amenities(self):
-            """ getter returns list of amenities """
-            list_of_amenities = []
-            all_amenities = models.storage.all(Amenity)
-            for key, obj, in all_amenities.items():
+            """ the getter  returns list of amenities """
+            amenities_list = []
+            amenities_all = models.storage.all(Amenity)
+            for key, obj, in amenities_all.items():
                 if key in self.amenity_ids:
-                    list_of_amenities.append(obj)
-            return list_of_amenities
+                    amenities_list.append(obj)
+            return amenities_list
 
         @amenities.setter
         def amenities(self, obj=None):
-            """Set of amenity_ids"""
+            """Set of amenity ids"""
             if type(obj).__name__ == 'Amenity':
                 new_amenity = 'Amenity' + '.' + obj.id
                 self.amenity_ids.append(new_amenity)
